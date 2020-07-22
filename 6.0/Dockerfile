@@ -93,7 +93,7 @@ RUN set -eux; \
 	redis-cli --version; \
 	redis-server --version
 
-RUN mkdir /data && chown redis:redis /data
+RUN mkdir /data && chown redis:redis /data && chmod -R 777 /data
 VOLUME /data
 WORKDIR /data
 
