@@ -1,7 +1,9 @@
+ARG data=/var/lib/redis/data
+
 FROM debian:buster-slim
 
 # add our user and group first to make sure their IDs get assigned consistently, regardless of whatever dependencies get added
-RUN groupadd -r -g 999 redis && useradd -r -g redis -u 999 redis
+RUN groupadd -r -g 1001 redis && useradd -r -g redis -u 1001 redis
 
 # grab gosu for easy step-down from root
 # https://github.com/tianon/gosu/releases
@@ -93,9 +95,9 @@ RUN set -eux; \
 	redis-cli --version; \
 	redis-server --version
 
-RUN mkdir /data && chown redis:redis /data
-VOLUME /data
-WORKDIR /data
+RUN mkdir --parents ${data} && chown redis:redis ${data}
+VOLUME ${data}
+WORKDIR ${data}
 
 COPY docker-entrypoint.sh /usr/local/bin/
 ENTRYPOINT ["docker-entrypoint.sh"]
